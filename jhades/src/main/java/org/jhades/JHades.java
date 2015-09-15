@@ -17,7 +17,15 @@ import org.jhades.service.ClasspathScanner;
  */
 public class JHades {
 
-    private ClasspathScanner scanner = new ClasspathScanner();
+    private ClasspathScanner scanner;
+
+    public JHades() {
+        scanner = new ClasspathScanner();
+    }
+
+    public JHades(ClassLoader classLoader) {
+        scanner = new ClasspathScanner(classLoader);
+    }
 
     public JHades printClassLoaderNames() {
 

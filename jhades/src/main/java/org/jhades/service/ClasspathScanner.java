@@ -55,6 +55,15 @@ public class ClasspathScanner {
 
     public static final String BOOTSTRAP_CLASS_LOADER = "Bootstrap class loader";
     private StdOutLogger logger = StdOutLogger.getLogger();
+    private final ClassLoader classLoader;
+
+    public ClasspathScanner() {
+        this(ClasspathScanner.class.getClassLoader());
+    }
+
+    public ClasspathScanner(ClassLoader classLoader) {
+        this.classLoader = classLoader;
+    }
 
     /**
      *
@@ -65,7 +74,7 @@ public class ClasspathScanner {
      */
     public List<ClasspathEntry> findAllClasspathEntries() {
         // try to extract all classpath entries from the class loaders
-        List<ClazzLoader> classLoaders = findAllClassLoaders(getClass().getClassLoader());
+        List<ClazzLoader> classLoaders = findAllClassLoaders(classLoader);
 
         List<ClasspathEntry> allClasspathEntries = ClazzLoaders.findAllClasspathEntries(classLoaders);
 
@@ -116,7 +125,7 @@ public class ClasspathScanner {
      * @return
      */
     public List<ClazzLoader> findAllClassLoaders() {
-        return findAllClassLoaders(getClass().getClassLoader());
+        return findAllClassLoaders(classLoader);
     }
 
     /**
@@ -128,7 +137,7 @@ public class ClasspathScanner {
      *
      */
     public List<URL> findAllResourceVersions(String resourceUrl) {
-        ClassLoader cl = getClass().getClassLoader();
+        ClassLoader cl = classLoader;
         List<URL> results = new ArrayList<>();
 
         try {
@@ -151,7 +160,7 @@ public class ClasspathScanner {
      * @return - the URL of the resource version being used, or null if not found.
      */
     public URL findCurrentResourceVersion(String resourceUrl) {
-        ClassLoader cl = getClass().getClassLoader();
+        ClassLoader cl = classLoader;
         return cl.getResource(resourceUrl);
     }
 
